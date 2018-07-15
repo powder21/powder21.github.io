@@ -1,6 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title><![CDATA[博客搭好了，纪念一下]]></title>
+    <url>%2F2018%2F07%2F15%2F%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%A5%BD%E4%BA%86%EF%BC%8C%E7%BA%AA%E5%BF%B5%E4%B8%80%E4%B8%8B%2F</url>
+    <content type="text"><![CDATA[昨晚想起来博客这件事已经是10点，一开始入手jekyll，但总是有同步慢、网页404等一系列问题。今天转入Hexo，感觉好用很多。花了一下午加一晚上配置好了一些布局，之后可以专注于写一些博客了。]]></content>
+      <tags>
+        <tag>日常</tag>
+      </tags>
+  </entry>
+  <entry>
     <title><![CDATA[templete]]></title>
     <url>%2F2018%2F07%2F15%2Ftemplete%2F</url>
     <content type="text"><![CDATA[asdasd]]></content>
