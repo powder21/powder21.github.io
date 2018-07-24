@@ -1,6 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title><![CDATA[tensorflow保存和加载网络参数]]></title>
+    <url>%2F2018%2F07%2F24%2Ftensorflow%E5%8A%A0%E8%BD%BD%E6%8C%87%E5%AE%9A%E7%BD%91%E7%BB%9C%E5%8F%82%E6%95%B0%2F</url>
+    <content type="text"><![CDATA[保存参数12saver = tf.train.Saver()saver.save(sess, 'model.ckpt') 加载全部参数（默认）1saver.restore(sess, 'model.ckpt') 加载指定参数ckpt文件中包含了在训练中所有的参数，但是在test时可能只需要使用部分网络就可以，这时候就需要只加载部分变量。指定的方式就是根据变量名进行区分，所以在训练之前声明各个变量时scope应该区分好，尽可能自己命名变量的name参数。123456with tf.variable_scope(name): w = tf.get_variable('w', shape, initializer)with tf.variable_scope(name): conv1 = conv2d(input) conv2 = conv2d(conv1) ... 之后就可以从.ckpt中得到变量1234# 几种variabletf.contrib.framework.get_variables_to_restore()tf.all_variables()tf.trainable_varialbes() 根据变量名加载指定变量1234variables = trainable_varialbes # 所有可加载的变量variable_to_restore = [v for v in variables if 'xxx' in v.name] # if 后是任意可筛选的条件即可saver = tf.train.Saver(variable_to_restore)saver.restore(sess, 'model.ckpt')]]></content>
+      <tags>
+        <tag>tensorflow</tag>
+      </tags>
+  </entry>
+  <entry>
     <title><![CDATA[博客搭好了，纪念一下]]></title>
     <url>%2F2018%2F07%2F15%2F%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%A5%BD%E4%BA%86%EF%BC%8C%E7%BA%AA%E5%BF%B5%E4%B8%80%E4%B8%8B%2F</url>
     <content type="text"><![CDATA[昨晚想起来博客这件事已经是10点，一开始入手jekyll，但总是有同步慢、网页404等一系列问题。今天转入Hexo，感觉好用很多。花了一下午加一晚上配置好了一些布局，之后可以专注于写一些博客了。 下面是hex的主要语法1hexo new *** 会在source/_post下建立***.md文件123hexo cleanhexo ghexo d 是将本地更改上传至github、站点生效的命令1hexo server 可以在本地预览变更，但个别变更如：description必须push至github才能生效 下面是一些参考网址 配置及说明 markdown语法 markdown公式]]></content>

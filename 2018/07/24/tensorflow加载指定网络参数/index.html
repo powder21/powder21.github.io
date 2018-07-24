@@ -66,7 +66,7 @@
 
 
 
-  <meta name="keywords" content="Hexo, NexT" />
+  <meta name="keywords" content="tensorflow," />
 
 
 
@@ -77,17 +77,18 @@
 
 
 
-<meta name="description" content="Education2013.9-2017.6 B.S.South China University of Technology 2017.9-now M.S.University of Science and Technology of China">
-<meta property="og:type" content="website">
-<meta property="og:title" content="about">
-<meta property="og:url" content="http://yoursite.com/about/index.html">
+<meta name="description" content="保存参数12saver = tf.train.Saver()saver.save(sess, &apos;model.ckpt&apos;) 加载全部参数（默认）1saver.restore(sess, &apos;model.ckpt&apos;) 加载指定参数ckpt文件中包含了在训练中所有的参数，但是在test时可能只需要使用部分网络就可以，这时候就需要只加载部分变量。指定的方式就是根据变量名进行区分，所以在训练之前声明各个变量时">
+<meta name="keywords" content="tensorflow">
+<meta property="og:type" content="article">
+<meta property="og:title" content="tensorflow保存和加载网络参数">
+<meta property="og:url" content="http://yoursite.com/2018/07/24/tensorflow加载指定网络参数/index.html">
 <meta property="og:site_name" content="Larry&#39;s blog">
-<meta property="og:description" content="Education2013.9-2017.6 B.S.South China University of Technology 2017.9-now M.S.University of Science and Technology of China">
+<meta property="og:description" content="保存参数12saver = tf.train.Saver()saver.save(sess, &apos;model.ckpt&apos;) 加载全部参数（默认）1saver.restore(sess, &apos;model.ckpt&apos;) 加载指定参数ckpt文件中包含了在训练中所有的参数，但是在test时可能只需要使用部分网络就可以，这时候就需要只加载部分变量。指定的方式就是根据变量名进行区分，所以在训练之前声明各个变量时">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2018-07-15T12:55:06.558Z">
+<meta property="og:updated_time" content="2018-07-24T03:20:40.622Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="about">
-<meta name="twitter:description" content="Education2013.9-2017.6 B.S.South China University of Technology 2017.9-now M.S.University of Science and Technology of China">
+<meta name="twitter:title" content="tensorflow保存和加载网络参数">
+<meta name="twitter:description" content="保存参数12saver = tf.train.Saver()saver.save(sess, &apos;model.ckpt&apos;) 加载全部参数（默认）1saver.restore(sess, &apos;model.ckpt&apos;) 加载指定参数ckpt文件中包含了在训练中所有的参数，但是在test时可能只需要使用部分网络就可以，这时候就需要只加载部分变量。指定的方式就是根据变量名进行区分，所以在训练之前声明各个变量时">
 
 
 
@@ -117,13 +118,13 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/about/"/>
+  <link rel="canonical" href="http://yoursite.com/2018/07/24/tensorflow加载指定网络参数/"/>
 
 
 
 
 
-  <title>about | Larry's blog</title>
+  <title>tensorflow保存和加载网络参数 | Larry's blog</title>
   
 
 
@@ -252,35 +253,148 @@
 
   <div id="posts" class="posts-expand">
     
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/07/24/tensorflow加载指定网络参数/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Larry Xu">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/my_icon.jpeg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Larry's blog">
+    </span>
+
     
-    
-    <div class="post-block page">
       <header class="post-header">
 
-	<h1 class="post-title" itemprop="name headline">about</h1>
-
-
-
-</header>
-
-      
-      
-      
-      <div class="post-body">
         
         
-          <h2 id="Education"><a href="#Education" class="headerlink" title="Education"></a>Education</h2><p><strong>2013.9-2017.6 B.S.</strong><br><em>South China University of Technology</em></p>
-<p><strong>2017.9-now M.S.</strong><br><em>University of Science and Technology of China</em></p>
-
+          <h1 class="post-title" itemprop="name headline">tensorflow保存和加载网络参数</h1>
         
-      </div>
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-07-24T10:57:39+08:00">
+                2018-07-24
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
       
       
+
+      
+        <h3 id="保存参数"><a href="#保存参数" class="headerlink" title="保存参数"></a>保存参数</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">saver = tf.train.Saver()</span><br><span class="line">saver.save(sess, <span class="string">'model.ckpt'</span>)</span><br></pre></td></tr></table></figure>
+<h3 id="加载全部参数（默认）"><a href="#加载全部参数（默认）" class="headerlink" title="加载全部参数（默认）"></a>加载全部参数（默认）</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">saver.restore(sess, <span class="string">'model.ckpt'</span>)</span><br></pre></td></tr></table></figure>
+<h3 id="加载指定参数"><a href="#加载指定参数" class="headerlink" title="加载指定参数"></a>加载指定参数</h3><p><strong>ckpt文件中包含了在训练中所有的参数，但是在test时可能只需要使用部分网络就可以，这时候就需要只加载部分变量。</strong><br>指定的方式就是根据变量名进行区分，所以在训练之前声明各个变量时scope应该区分好，尽可能自己命名变量的name参数。<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">with</span> tf.variable_scope(name):</span><br><span class="line">	w = tf.get_variable(<span class="string">'w'</span>, shape, initializer)</span><br><span class="line"><span class="keyword">with</span> tf.variable_scope(name):</span><br><span class="line">	conv1 = conv2d(input)</span><br><span class="line">	conv2 = conv2d(conv1)</span><br><span class="line">	...</span><br></pre></td></tr></table></figure></p>
+<p>之后就可以从.ckpt中得到变量<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 几种variable</span></span><br><span class="line">tf.contrib.framework.get_variables_to_restore()</span><br><span class="line">tf.all_variables()</span><br><span class="line">tf.trainable_varialbes()</span><br></pre></td></tr></table></figure></p>
+<p>根据变量名加载指定变量<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">variables = trainable_varialbes <span class="comment"># 所有可加载的变量</span></span><br><span class="line">variable_to_restore = [v <span class="keyword">for</span> v <span class="keyword">in</span> variables <span class="keyword">if</span> <span class="string">'xxx'</span> <span class="keyword">in</span> v.name] <span class="comment"># if 后是任意可筛选的条件即可</span></span><br><span class="line">saver = tf.train.Saver(variable_to_restore)</span><br><span class="line">saver.restore(sess, <span class="string">'model.ckpt'</span>)</span><br></pre></td></tr></table></figure></p>
+
       
     </div>
     
     
     
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/tensorflow/" rel="tag"># tensorflow</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/07/15/博客搭好了，纪念一下/" rel="next" title="博客搭好了，纪念一下">
+                <i class="fa fa-chevron-left"></i> 博客搭好了，纪念一下
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
   </div>
 
 
@@ -403,7 +517,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Education"><span class="nav-number">1.</span> <span class="nav-text">Education</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#保存参数"><span class="nav-number">1.</span> <span class="nav-text">保存参数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#加载全部参数（默认）"><span class="nav-number">2.</span> <span class="nav-text">加载全部参数（默认）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#加载指定参数"><span class="nav-number">3.</span> <span class="nav-text">加载指定参数</span></a></li></ol></div>
             
 
           </div>
