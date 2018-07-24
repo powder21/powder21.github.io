@@ -335,7 +335,9 @@
       
         
           
-          保存参数12saver = tf.train.Saver()saver.save(sess, 'mo
+          保存参数12saver = tf.train.Saver()saver.save(sess, 'model.ckpt')
+加载全部参数（默认）1saver.restore(sess, 'model.ckpt')
+加载指定参数ckpt文件中包含了在训练中所有的参数，但是在test时可能只需要使用部分网
           ...
           <!--noindex-->
           <div class="post-button text-center">
@@ -461,7 +463,9 @@
       
         
           
-          昨晚想起来博客这件事已经是10点，一开始入手jekyll，但总是有同步慢、网页404等一系列问题。今
+          昨晚想起来博客这件事已经是10点，一开始入手jekyll，但总是有同步慢、网页404等一系列问题。今天转入Hexo，感觉好用很多。花了一下午加一晚上配置好了一些布局，之后可以专注于写一些博客了。
+下面是hex的主要语法1hexo new ***
+会在source/_post下建立***.md文件12
           ...
           <!--noindex-->
           <div class="post-button text-center">
