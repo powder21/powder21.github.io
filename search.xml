@@ -1,6 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title><![CDATA[Process finished with exit code 137 (interrupted by signal 9: SIGKILL)]]></title>
+    <url>%2F2018%2F09%2F03%2FProcess-finished-with-exit-code-137-interrupted-by-signal-9-SIGKILL%2F</url>
+    <content type="text"><![CDATA[今天发现在GPU集群的一组程序全都异常停止了，没有报错，而且停的时间也都不一样。到本地运行相同的程序发现报错1Process finished with exit code 137 (interrupted by signal 9: SIGKILL) 查了一下，猜测可能是两个原因：1.CPU占用2.内存占用用top指令查看程序运行时的两项占用，CPU正常，内存在每个epoch结束之后会飙升至32G，其他时候16G左右。最终定位到是数据打乱时的123if self.p == 0 and self.shuffle: inds = self.rng.permutation(self.data.shape[0]) self.data = self.data[inds] 最后一句赋值时会生成一个备份，导致内存溢出。更改为12if self.p == 0 and self.shuffle: np.random.shuffle(self.data) shuffle函数只会打乱array的第一个维度，并且由于采用算法原因不用整个数据的备份，空间占用小。]]></content>
+  </entry>
+  <entry>
     <title><![CDATA[tensorflow保存和加载网络参数]]></title>
     <url>%2F2018%2F07%2F24%2Ftensorflow%E5%8A%A0%E8%BD%BD%E6%8C%87%E5%AE%9A%E7%BD%91%E7%BB%9C%E5%8F%82%E6%95%B0%2F</url>
     <content type="text"><![CDATA[保存参数12saver = tf.train.Saver()saver.save(sess, 'model.ckpt') 加载全部参数（默认）1saver.restore(sess, 'model.ckpt') 加载指定参数ckpt文件中包含了在训练中所有的参数，但是在test时可能只需要使用部分网络就可以，这时候就需要只加载部分变量。指定的方式就是根据变量名进行区分，所以在训练之前声明各个变量时scope应该区分好，尽可能自己命名变量的name参数。123456with tf.variable_scope(name): w = tf.get_variable('w', shape, initializer)with tf.variable_scope(name): conv1 = conv2d(input) conv2 = conv2d(conv1) ... 之后就可以从.ckpt中得到变量1234# 几种variabletf.contrib.framework.get_variables_to_restore()tf.all_variables()tf.trainable_varialbes() 根据变量名加载指定变量1234variables = trainable_varialbes # 所有可加载的变量variable_to_restore = [v for v in variables if 'xxx' in v.name] # if 后是任意可筛选的条件即可saver = tf.train.Saver(variable_to_restore)saver.restore(sess, 'model.ckpt')]]></content>
