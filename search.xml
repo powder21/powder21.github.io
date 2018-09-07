@@ -2,17 +2,17 @@
 <search>
   <entry>
     <title><![CDATA[WGAN-GP训练出现NaN]]></title>
-    <url>%2FWGAN-GP%E8%AE%AD%E7%BB%83%E5%87%BA%E7%8E%B0NaN%2F</url>
+    <url>%2FWGAN-GP%E8%AE%AD%E7%BB%83%E5%87%BA%E7%8E%B0NaN.html%2F</url>
     <content type="text"><![CDATA[最近在做实验时需要用到WGAN-GP，训练时偶尔会出现NaN，今天仔细检查了一下，找出了原因：gradient penalty中有开根号操作，求导时可能会出现除以0，出现NaN 先看一下WGAN-GP用tensorflow的实现代码：12345678910111213141516171819202122232425262728293031323334353637383940414243444546def wgan_loss(real, fake, name='wgan_loss'): """ wgan loss function for GANs. - Wasserstein GAN: https://arxiv.org/abs/1701.07875 """ with tf.variable_scope(name): d_loss = tf.reduce_mean(fake-real) g_loss = -tf.reduce_mean(fake) return g_loss, d_lossdef random_interpolates(x, y, alpha=None): """ x: first dimension as batch_size y: first dimension as batch_size alpha: [BATCH_SIZE, 1] """ shape = x.get_shape().as_list() x = tf.reshape(x, [shape[0], -1]) y = tf.reshape(y, [shape[0], -1]) if alpha is None: alpha = tf.random_uniform(shape=[shape[0], 1]) interpolates = x + alpha*(y - x) return tf.reshape(interpolates, shape)def gradients_penalty(x, y, mask=None, norm=1.): """Improved Training of Wasserstein GANs - https://arxiv.org/abs/1704.00028 """ gradients = tf.gradients(y, x)[0] if mask is None: mask = tf.ones_like(gradients) slopes = tf.sqrt(tf.reduce_sum(tf.square(gradients) * mask, axis=[1, 2, 3])) return tf.reduce_mean(tf.square(slopes - norm)) g_loss, d_loss = wgan_loss(real_d_logits, fake_d_logits)fake_data = G_net(random_z)interpolates = random_interpolates(real_data, fake_data)inter_d_logits = D_net(interpolates)penalty = gradients_penalty(interpolates, inter_d_logits)d_loss += lambda * penalty 注意到在gradients_penalty函数中有使用tf.sqrt，求导时可能会有除以0出现，从而发生NaN，改为如下即可：12345678910def gradients_penalty(x, y, mask=None, norm=1.): """Improved Training of Wasserstein GANs - https://arxiv.org/abs/1704.00028 """ gradients = tf.gradients(y, x)[0] if mask is None: mask = tf.ones_like(gradients) slopes = tf.sqrt(tf.reduce_sum(tf.square(gradients) * mask, axis=[1, 2, 3]) + 1e-8) return tf.reduce_mean(tf.square(slopes - norm))]]></content>
   </entry>
   <entry>
     <title><![CDATA[Process finished with exit code 137 (interrupted by signal 9: SIGKILL)]]></title>
-    <url>%2FProcess-finished-with-exit-code-137-interrupted-by-signal-9-SIGKILL%2F</url>
+    <url>%2FProcess-finished-with-exit-code-137-interrupted-by-signal-9-SIGKILL.html%2F</url>
     <content type="text"><![CDATA[今天发现在GPU集群的一组程序全都异常停止了，没有报错，而且停的时间也都不一样。到本地运行相同的程序发现报错1Process finished with exit code 137 (interrupted by signal 9: SIGKILL) 查了一下，猜测可能是两个原因：1.CPU占用2.内存占用用top指令查看程序运行时的两项占用，CPU正常，内存在每个epoch结束之后会飙升至32G，其他时候16G左右。最终定位到是数据打乱时的123if self.p == 0 and self.shuffle: inds = self.rng.permutation(self.data.shape[0]) self.data = self.data[inds] 最后一句赋值时会生成一个备份，导致内存溢出。更改为12if self.p == 0 and self.shuffle: np.random.shuffle(self.data) shuffle函数只会打乱array的第一个维度，并且由于采用算法原因不用整个数据的备份，空间占用小。]]></content>
   </entry>
   <entry>
     <title><![CDATA[tensorflow保存和加载网络参数]]></title>
-    <url>%2Ftensorflow%E5%8A%A0%E8%BD%BD%E6%8C%87%E5%AE%9A%E7%BD%91%E7%BB%9C%E5%8F%82%E6%95%B0%2F</url>
+    <url>%2Ftensorflow%E5%8A%A0%E8%BD%BD%E6%8C%87%E5%AE%9A%E7%BD%91%E7%BB%9C%E5%8F%82%E6%95%B0.html%2F</url>
     <content type="text"><![CDATA[保存参数12saver = tf.train.Saver()saver.save(sess, 'model.ckpt') 加载全部参数（默认）1saver.restore(sess, 'model.ckpt') 加载指定参数ckpt文件中包含了在训练中所有的参数，但是在test时可能只需要使用部分网络就可以，这时候就需要只加载部分变量。指定的方式就是根据变量名进行区分，所以在训练之前声明各个变量时scope应该区分好，尽可能自己命名变量的name参数。123456with tf.variable_scope(name): w = tf.get_variable('w', shape, initializer)with tf.variable_scope(name): conv1 = conv2d(input) conv2 = conv2d(conv1) ... 之后就可以从.ckpt中得到变量1234# 几种variabletf.contrib.framework.get_variables_to_restore()tf.all_variables()tf.trainable_varialbes() 根据变量名加载指定变量1234variables = trainable_varialbes # 所有可加载的变量variable_to_restore = [v for v in variables if 'xxx' in v.name] # if 后是任意可筛选的条件即可saver = tf.train.Saver(variable_to_restore)saver.restore(sess, 'model.ckpt')]]></content>
       <tags>
         <tag>tensorflow</tag>
@@ -20,7 +20,7 @@
   </entry>
   <entry>
     <title><![CDATA[博客搭好了，纪念一下]]></title>
-    <url>%2F%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%A5%BD%E4%BA%86%EF%BC%8C%E7%BA%AA%E5%BF%B5%E4%B8%80%E4%B8%8B%2F</url>
+    <url>%2F%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%A5%BD%E4%BA%86%EF%BC%8C%E7%BA%AA%E5%BF%B5%E4%B8%80%E4%B8%8B.html%2F</url>
     <content type="text"><![CDATA[昨晚想起来博客这件事已经是10点，一开始入手jekyll，但总是有同步慢、网页404等一系列问题。今天转入Hexo，感觉好用很多。花了一下午加一晚上配置好了一些布局，之后可以专注于写一些博客了。 下面是hex的主要语法1hexo new *** 会在source/_post下建立***.md文件123hexo cleanhexo ghexo d 是将本地更改上传至github、站点生效的命令1hexo server 可以在本地预览变更，但个别变更如：description必须push至github才能生效 下面是一些参考网址 配置及说明 markdown语法 markdown公式]]></content>
       <tags>
         <tag>日常</tag>

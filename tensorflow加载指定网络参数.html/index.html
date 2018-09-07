@@ -67,7 +67,7 @@
 
 
 
-  <meta name="keywords" content="Hexo, NexT" />
+  <meta name="keywords" content="tensorflow," />
 
 
 
@@ -78,17 +78,18 @@
 
 
 
-<meta name="description" content="最近在做实验时需要用到WGAN-GP，训练时偶尔会出现NaN，今天仔细检查了一下，找出了原因：gradient penalty中有开根号操作，求导时可能会出现除以0，出现NaN 先看一下WGAN-GP用tensorflow的实现代码：12345678910111213141516171819202122232425262728293031323334353637383940414243444546">
+<meta name="description" content="保存参数12saver = tf.train.Saver()saver.save(sess, &apos;model.ckpt&apos;) 加载全部参数（默认）1saver.restore(sess, &apos;model.ckpt&apos;) 加载指定参数ckpt文件中包含了在训练中所有的参数，但是在test时可能只需要使用部分网络就可以，这时候就需要只加载部分变量。指定的方式就是根据变量名进行区分，所以在训练之前声明各个变量时">
+<meta name="keywords" content="tensorflow">
 <meta property="og:type" content="article">
-<meta property="og:title" content="WGAN-GP训练出现NaN">
-<meta property="og:url" content="http://xsx.today/WGAN-GP训练出现NaN/index.html">
+<meta property="og:title" content="tensorflow保存和加载网络参数">
+<meta property="og:url" content="http://xsx.today/tensorflow加载指定网络参数.html/index.html">
 <meta property="og:site_name" content="Larry&#39;s blog">
-<meta property="og:description" content="最近在做实验时需要用到WGAN-GP，训练时偶尔会出现NaN，今天仔细检查了一下，找出了原因：gradient penalty中有开根号操作，求导时可能会出现除以0，出现NaN 先看一下WGAN-GP用tensorflow的实现代码：12345678910111213141516171819202122232425262728293031323334353637383940414243444546">
+<meta property="og:description" content="保存参数12saver = tf.train.Saver()saver.save(sess, &apos;model.ckpt&apos;) 加载全部参数（默认）1saver.restore(sess, &apos;model.ckpt&apos;) 加载指定参数ckpt文件中包含了在训练中所有的参数，但是在test时可能只需要使用部分网络就可以，这时候就需要只加载部分变量。指定的方式就是根据变量名进行区分，所以在训练之前声明各个变量时">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2018-09-07T07:25:33.643Z">
+<meta property="og:updated_time" content="2018-07-24T03:20:40.622Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="WGAN-GP训练出现NaN">
-<meta name="twitter:description" content="最近在做实验时需要用到WGAN-GP，训练时偶尔会出现NaN，今天仔细检查了一下，找出了原因：gradient penalty中有开根号操作，求导时可能会出现除以0，出现NaN 先看一下WGAN-GP用tensorflow的实现代码：12345678910111213141516171819202122232425262728293031323334353637383940414243444546">
+<meta name="twitter:title" content="tensorflow保存和加载网络参数">
+<meta name="twitter:description" content="保存参数12saver = tf.train.Saver()saver.save(sess, &apos;model.ckpt&apos;) 加载全部参数（默认）1saver.restore(sess, &apos;model.ckpt&apos;) 加载指定参数ckpt文件中包含了在训练中所有的参数，但是在test时可能只需要使用部分网络就可以，这时候就需要只加载部分变量。指定的方式就是根据变量名进行区分，所以在训练之前声明各个变量时">
 
 
 
@@ -118,13 +119,13 @@
 
 
 
-  <link rel="canonical" href="http://xsx.today/WGAN-GP训练出现NaN/"/>
+  <link rel="canonical" href="http://xsx.today/tensorflow加载指定网络参数.html/"/>
 
 
 
 
 
-  <title>WGAN-GP训练出现NaN | Larry's blog</title>
+  <title>tensorflow保存和加载网络参数 | Larry's blog</title>
   
 
 
@@ -265,7 +266,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://xsx.today/WGAN-GP训练出现NaN/">
+    <link itemprop="mainEntityOfPage" href="http://xsx.today/tensorflow加载指定网络参数.html/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Larry Xu">
@@ -282,7 +283,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">WGAN-GP训练出现NaN</h1>
+          <h1 class="post-title" itemprop="name headline">tensorflow保存和加载网络参数</h1>
         
 
         <div class="post-meta">
@@ -294,8 +295,8 @@
               
                 <span class="post-meta-item-text">Posted on</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-09-07T14:56:16+08:00">
-                2018-09-07
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-07-24T10:57:39+08:00">
+                2018-07-24
               </time>
             
 
@@ -332,9 +333,11 @@
       
 
       
-        <p>最近在做实验时需要用到WGAN-GP，训练时偶尔会出现NaN，今天仔细检查了一下，找出了原因：gradient penalty中有开根号操作，求导时可能会出现除以0，出现NaN</p>
-<p>先看一下WGAN-GP用tensorflow的实现代码：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">wgan_loss</span><span class="params">(real, fake, name=<span class="string">'wgan_loss'</span>)</span>:</span></span><br><span class="line">    <span class="string">"""</span></span><br><span class="line"><span class="string">    wgan loss function for GANs.</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    - Wasserstein GAN: https://arxiv.org/abs/1701.07875</span></span><br><span class="line"><span class="string">    """</span></span><br><span class="line">    <span class="keyword">with</span> tf.variable_scope(name):</span><br><span class="line">        d_loss = tf.reduce_mean(fake-real)</span><br><span class="line">        g_loss = -tf.reduce_mean(fake)</span><br><span class="line">    <span class="keyword">return</span> g_loss, d_loss</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">random_interpolates</span><span class="params">(x, y, alpha=None)</span>:</span></span><br><span class="line">    <span class="string">"""</span></span><br><span class="line"><span class="string">    x: first dimension as batch_size</span></span><br><span class="line"><span class="string">    y: first dimension as batch_size</span></span><br><span class="line"><span class="string">    alpha: [BATCH_SIZE, 1]</span></span><br><span class="line"><span class="string">    """</span></span><br><span class="line">    shape = x.get_shape().as_list()</span><br><span class="line">    x = tf.reshape(x, [shape[<span class="number">0</span>], <span class="number">-1</span>])</span><br><span class="line">    y = tf.reshape(y, [shape[<span class="number">0</span>], <span class="number">-1</span>])</span><br><span class="line">    <span class="keyword">if</span> alpha <span class="keyword">is</span> <span class="keyword">None</span>:</span><br><span class="line">        alpha = tf.random_uniform(shape=[shape[<span class="number">0</span>], <span class="number">1</span>])</span><br><span class="line">    interpolates = x + alpha*(y - x)</span><br><span class="line">    <span class="keyword">return</span> tf.reshape(interpolates, shape)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">gradients_penalty</span><span class="params">(x, y, mask=None, norm=<span class="number">1.</span>)</span>:</span></span><br><span class="line">    <span class="string">"""Improved Training of Wasserstein GANs</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    - https://arxiv.org/abs/1704.00028</span></span><br><span class="line"><span class="string">    """</span></span><br><span class="line">    gradients = tf.gradients(y, x)[<span class="number">0</span>]</span><br><span class="line">    <span class="keyword">if</span> mask <span class="keyword">is</span> <span class="keyword">None</span>:</span><br><span class="line">        mask = tf.ones_like(gradients)</span><br><span class="line">    slopes = tf.sqrt(tf.reduce_sum(tf.square(gradients) * mask, axis=[<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>]))</span><br><span class="line">    <span class="keyword">return</span> tf.reduce_mean(tf.square(slopes - norm))</span><br><span class="line">	</span><br><span class="line">	</span><br><span class="line">g_loss, d_loss = wgan_loss(real_d_logits, fake_d_logits)</span><br><span class="line">fake_data = G_net(random_z)</span><br><span class="line">interpolates = random_interpolates(real_data, fake_data)</span><br><span class="line">inter_d_logits = D_net(interpolates)</span><br><span class="line">penalty = gradients_penalty(interpolates, inter_d_logits)</span><br><span class="line"></span><br><span class="line">d_loss += <span class="keyword">lambda</span> * penalty</span><br></pre></td></tr></table></figure></p>
-<p>注意到在gradients_penalty函数中有使用<code>tf.sqrt</code>，求导时可能会有除以0出现，从而发生NaN，改为如下即可：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">gradients_penalty</span><span class="params">(x, y, mask=None, norm=<span class="number">1.</span>)</span>:</span></span><br><span class="line">    <span class="string">"""Improved Training of Wasserstein GANs</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    - https://arxiv.org/abs/1704.00028</span></span><br><span class="line"><span class="string">    """</span></span><br><span class="line">    gradients = tf.gradients(y, x)[<span class="number">0</span>]</span><br><span class="line">    <span class="keyword">if</span> mask <span class="keyword">is</span> <span class="keyword">None</span>:</span><br><span class="line">        mask = tf.ones_like(gradients)</span><br><span class="line">    slopes = tf.sqrt(tf.reduce_sum(tf.square(gradients) * mask, axis=[<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>]) + <span class="number">1e-8</span>)</span><br><span class="line">    <span class="keyword">return</span> tf.reduce_mean(tf.square(slopes - norm))</span><br></pre></td></tr></table></figure></p>
+        <h3 id="保存参数"><a href="#保存参数" class="headerlink" title="保存参数"></a>保存参数</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">saver = tf.train.Saver()</span><br><span class="line">saver.save(sess, <span class="string">'model.ckpt'</span>)</span><br></pre></td></tr></table></figure>
+<h3 id="加载全部参数（默认）"><a href="#加载全部参数（默认）" class="headerlink" title="加载全部参数（默认）"></a>加载全部参数（默认）</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">saver.restore(sess, <span class="string">'model.ckpt'</span>)</span><br></pre></td></tr></table></figure>
+<h3 id="加载指定参数"><a href="#加载指定参数" class="headerlink" title="加载指定参数"></a>加载指定参数</h3><p><strong>ckpt文件中包含了在训练中所有的参数，但是在test时可能只需要使用部分网络就可以，这时候就需要只加载部分变量。</strong><br>指定的方式就是根据变量名进行区分，所以在训练之前声明各个变量时scope应该区分好，尽可能自己命名变量的name参数。<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">with</span> tf.variable_scope(name):</span><br><span class="line">	w = tf.get_variable(<span class="string">'w'</span>, shape, initializer)</span><br><span class="line"><span class="keyword">with</span> tf.variable_scope(name):</span><br><span class="line">	conv1 = conv2d(input)</span><br><span class="line">	conv2 = conv2d(conv1)</span><br><span class="line">	...</span><br></pre></td></tr></table></figure></p>
+<p>之后就可以从.ckpt中得到变量<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 几种variable</span></span><br><span class="line">tf.contrib.framework.get_variables_to_restore()</span><br><span class="line">tf.all_variables()</span><br><span class="line">tf.trainable_varialbes()</span><br></pre></td></tr></table></figure></p>
+<p>根据变量名加载指定变量<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">variables = trainable_varialbes <span class="comment"># 所有可加载的变量</span></span><br><span class="line">variable_to_restore = [v <span class="keyword">for</span> v <span class="keyword">in</span> variables <span class="keyword">if</span> <span class="string">'xxx'</span> <span class="keyword">in</span> v.name] <span class="comment"># if 后是任意可筛选的条件即可</span></span><br><span class="line">saver = tf.train.Saver(variable_to_restore)</span><br><span class="line">saver.restore(sess, <span class="string">'model.ckpt'</span>)</span><br></pre></td></tr></table></figure></p>
 
       
     </div>
@@ -350,6 +353,12 @@
 
     <footer class="post-footer">
       
+        <div class="post-tags">
+          
+            <a href="/tags/tensorflow/" rel="tag"># tensorflow</a>
+          
+        </div>
+      
 
       
       
@@ -359,8 +368,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/Process-finished-with-exit-code-137-interrupted-by-signal-9-SIGKILL/" rel="next" title="Process finished with exit code 137 (interrupted by signal 9: SIGKILL)">
-                <i class="fa fa-chevron-left"></i> Process finished with exit code 137 (interrupted by signal 9: SIGKILL)
+              <a href="/博客搭好了，纪念一下.html/" rel="next" title="博客搭好了，纪念一下">
+                <i class="fa fa-chevron-left"></i> 博客搭好了，纪念一下
               </a>
             
           </div>
@@ -368,6 +377,10 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
+            
+              <a href="/Process-finished-with-exit-code-137-interrupted-by-signal-9-SIGKILL.html/" rel="prev" title="Process finished with exit code 137 (interrupted by signal 9: SIGKILL)">
+                Process finished with exit code 137 (interrupted by signal 9: SIGKILL) <i class="fa fa-chevron-right"></i>
+              </a>
             
           </div>
         </div>
@@ -419,8 +432,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
 
-      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+      <section class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
@@ -490,6 +512,22 @@
         </div>
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#保存参数"><span class="nav-number">1.</span> <span class="nav-text">保存参数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#加载全部参数（默认）"><span class="nav-number">2.</span> <span class="nav-text">加载全部参数（默认）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#加载指定参数"><span class="nav-number">3.</span> <span class="nav-text">加载指定参数</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       
