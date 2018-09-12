@@ -78,17 +78,17 @@
 
 
 
-<meta name="description" content="After all,tomorrow is another day.">
-<meta property="og:type" content="website">
-<meta property="og:title" content="tags">
-<meta property="og:url" content="http://xsx.today/tags/index.html">
+<meta name="description" content="本文简要介绍python中logging的使用 为什么用logging在写代码时debug，最初用的都是1print(xxxx) 比如下面一段代码：12345678910111213141516171819202122232425262728# -*- coding: utf-8 -*-import argparseparser = argparse.ArgumentParser(descript">
+<meta property="og:type" content="article">
+<meta property="og:title" content="python logging">
+<meta property="og:url" content="http://xsx.today/python-logging.html/index.html">
 <meta property="og:site_name" content="Larry&#39;s blog">
-<meta property="og:description" content="After all,tomorrow is another day.">
+<meta property="og:description" content="本文简要介绍python中logging的使用 为什么用logging在写代码时debug，最初用的都是1print(xxxx) 比如下面一段代码：12345678910111213141516171819202122232425262728# -*- coding: utf-8 -*-import argparseparser = argparse.ArgumentParser(descript">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2018-07-15T12:21:43.844Z">
+<meta property="og:updated_time" content="2018-09-12T11:47:40.763Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="tags">
-<meta name="twitter:description" content="After all,tomorrow is another day.">
+<meta name="twitter:title" content="python logging">
+<meta name="twitter:description" content="本文简要介绍python中logging的使用 为什么用logging在写代码时debug，最初用的都是1print(xxxx) 比如下面一段代码：12345678910111213141516171819202122232425262728# -*- coding: utf-8 -*-import argparseparser = argparse.ArgumentParser(descript">
 
 
 
@@ -118,13 +118,13 @@
 
 
 
-  <link rel="canonical" href="http://xsx.today/tags/"/>
+  <link rel="canonical" href="http://xsx.today/python-logging.html/"/>
 
 
 
 
 
-  <title>tags | Larry's blog</title>
+  <title>python logging | Larry's blog</title>
   
 
 
@@ -253,40 +253,146 @@
 
   <div id="posts" class="posts-expand">
     
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://xsx.today/python-logging.html/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Larry Xu">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/my_icon.jpeg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Larry's blog">
+    </span>
+
     
-    
-    <div class="post-block page">
       <header class="post-header">
 
-	<h1 class="post-title" itemprop="name headline">tags</h1>
-
-
-
-</header>
-
-      
-      
-      
-      <div class="post-body">
         
         
-          <div class="tag-cloud">
-            <div class="tag-cloud-title">
-                2 tags in total
-            </div>
-            <div class="tag-cloud-tags">
-              <a href="/tags/tensorflow/" style="font-size: 12px; color: #ccc">tensorflow</a> <a href="/tags/日常/" style="font-size: 12px; color: #ccc">日常</a>
-            </div>
-          </div>
+          <h1 class="post-title" itemprop="name headline">python logging</h1>
         
-      </div>
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-09-12T17:38:36+08:00">
+                2018-09-12
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
       
       
+
+      
+        <p>本文简要介绍python中logging的使用</p>
+<h3 id="为什么用logging"><a href="#为什么用logging" class="headerlink" title="为什么用logging"></a>为什么用logging</h3><p>在写代码时debug，最初用的都是<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">print(xxxx)</span><br></pre></td></tr></table></figure></p>
+<p>比如下面一段代码：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># -*- coding: utf-8 -*-</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> argparse</span><br><span class="line"></span><br><span class="line">parser = argparse.ArgumentParser(description=<span class="string">'I print sequence'</span>)</span><br><span class="line">parser.add_argument(<span class="string">'-s'</span>, <span class="string">'--start'</span>, type=int, dest=<span class="string">'start'</span>,</span><br><span class="line">                    help=<span class="string">'Start of the sequence'</span>, required=<span class="keyword">True</span>)</span><br><span class="line">parser.add_argument(<span class="string">'-e'</span>, <span class="string">'--end'</span>, type=int, dest=<span class="string">'end'</span>,</span><br><span class="line">                    help=<span class="string">'End of the sequence'</span>, required=<span class="keyword">True</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">array</span><span class="params">(start, end)</span>:</span></span><br><span class="line">    i = start</span><br><span class="line">    <span class="keyword">yield</span> i</span><br><span class="line">    <span class="keyword">while</span> start &lt;= i &lt; end:</span><br><span class="line">        print(<span class="string">'Before interation: i = %s'</span> % (i))</span><br><span class="line">        i += <span class="number">1</span></span><br><span class="line">        print(<span class="string">'After interation: i = %s'</span> % (i))</span><br><span class="line">        <span class="keyword">yield</span> i</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">main</span><span class="params">()</span>:</span></span><br><span class="line">    args = parser.parse_args()</span><br><span class="line">    <span class="keyword">for</span> n <span class="keyword">in</span> array(args.start, args.end):</span><br><span class="line">        print(n)</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:</span><br><span class="line">    main()</span><br></pre></td></tr></table></figure></p>
+<p>运行结果为<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">$ python test_logging.py  -s 0 -e 100</span><br><span class="line">Current value: 0</span><br><span class="line">Before interation: i = 0</span><br><span class="line">After interation: i = 1</span><br><span class="line">Current value: 1</span><br><span class="line">Before interation: i = 1</span><br><span class="line">After interation: i = 2</span><br><span class="line">Current value: 2</span><br><span class="line">Before interation: i = 2</span><br><span class="line">After interation: i = 3</span><br><span class="line">Current value: 3</span><br><span class="line">Before interation: i = 3</span><br><span class="line">After interation: i = 4</span><br><span class="line">Current value: 4</span><br><span class="line">... ...</span><br><span class="line">... ...</span><br></pre></td></tr></table></figure></p>
+<p>但是在程序正式release或者投入使用时，上述语句中的print都需要被注释掉。下次我想debug时又得取消注释，这样的过程难免让人觉得反人类。logging模块就可以派上用场，以filter的方式控制当前‘输出级别’，debug时就输出debug需要的琐碎信息，投入使用时就输出正式信息。</p>
+<h3 id="怎样用logging"><a href="#怎样用logging" class="headerlink" title="怎样用logging"></a>怎样用logging</h3><p>最简单的用法是直接使用basicConfig方法来对logging进行配置：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># -*- coding: utf-8 -*-</span></span><br><span class="line"><span class="keyword">import</span> logging</span><br><span class="line"></span><br><span class="line"><span class="comment"># 设置默认的level为DEBUG</span></span><br><span class="line"><span class="comment"># 设置log的格式</span></span><br><span class="line">logging.basicConfig(</span><br><span class="line">    level=logging.DEBUG,</span><br><span class="line">    format=<span class="string">"[%(asctime)s] %(name)s:%(levelname)s: %(message)s"</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 记录log</span></span><br><span class="line">logging.debug(...)</span><br><span class="line">logging.info(...)</span><br><span class="line">logging.warn(...)</span><br><span class="line">logging.error(...)</span><br><span class="line">logging.critical(...)</span><br></pre></td></tr></table></figure></p>
+<p>上面说的basicConfig方法可以满足你在绝大多数场景下的使用需求，但是basicConfig有一个很大的缺点。调用basicConfig其实是给root logger添加了一个handler，这样当你的程序和别的使用了 logging的第三方模块一起工作时，会影响第三方模块的logger行为。这是由logger的继承特性决定的。所以我们需要使用真正的logger：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"># -*- coding: utf-8 -*-</span><br><span class="line">import logging</span><br><span class="line"></span><br><span class="line"># 使用一个名字为fib的logger</span><br><span class="line">logger = logging.getLogger(&apos;fib&apos;)</span><br><span class="line"></span><br><span class="line"># 设置logger的level为DEBUG</span><br><span class="line">logger.setLevel(logging.DEBUG)</span><br><span class="line"></span><br><span class="line"># 创建一个输出日志到控制台的StreamHandler</span><br><span class="line">hdr = logging.StreamHandler()</span><br><span class="line">formatter = logging.Formatter(&apos;[%(asctime)s] %(name)s:%(levelname)s: %(message)s&apos;)</span><br><span class="line">hdr.setFormatter(formatter)</span><br><span class="line"></span><br><span class="line"># 给logger添加上handler</span><br><span class="line">logger.addHandler(hdr)</span><br></pre></td></tr></table></figure></p>
+<p>最后附上使用logging模块的数列程序完整代码：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># -*- coding: utf-8 -*-</span></span><br><span class="line"><span class="keyword">import</span> argparse</span><br><span class="line"></span><br><span class="line">parser = argparse.ArgumentParser(description=<span class="string">'I logger.debug sequence'</span>)</span><br><span class="line">parser.add_argument(<span class="string">'-s'</span>, <span class="string">'--start'</span>, type=int, dest=<span class="string">'start'</span>,</span><br><span class="line">                    help=<span class="string">'Start of the sequence'</span>, required=<span class="keyword">True</span>)</span><br><span class="line">parser.add_argument(<span class="string">'-e'</span>, <span class="string">'--end'</span>, type=int, dest=<span class="string">'end'</span>,</span><br><span class="line">                    help=<span class="string">'End of the sequence'</span>, required=<span class="keyword">True</span>)</span><br><span class="line">parser.add_argument(<span class="string">'-v'</span>, <span class="string">'--verbose'</span>, action=<span class="string">'store_true'</span>, dest=<span class="string">'verbose'</span>,</span><br><span class="line">                    help=<span class="string">'Enable debug info'</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> logging</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">logger = logging.getLogger(<span class="string">'array'</span>)</span><br><span class="line">logger.setLevel(logging.DEBUG)</span><br><span class="line"></span><br><span class="line">hdr = logging.StreamHandler()</span><br><span class="line">formatter = logging.Formatter(<span class="string">'[%(asctime)s] %(name)s:%(levelname)s: %(message)s'</span>)</span><br><span class="line">hdr.setFormatter(formatter)</span><br><span class="line"></span><br><span class="line">logger.addHandler(hdr)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">array</span><span class="params">(start, end)</span>:</span></span><br><span class="line">    i = start</span><br><span class="line">    <span class="keyword">yield</span> i</span><br><span class="line">    <span class="keyword">while</span> start &lt;= i &lt; end:</span><br><span class="line">        logger.debug(<span class="string">'Before interation: i = %s'</span> % (i))</span><br><span class="line">        i += <span class="number">1</span></span><br><span class="line">        logger.debug(<span class="string">'After interation: i = %s'</span> % (i))</span><br><span class="line">        <span class="keyword">yield</span> i</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">main</span><span class="params">()</span>:</span></span><br><span class="line">    args = parser.parse_args()</span><br><span class="line">    <span class="keyword">if</span> args.verbose:</span><br><span class="line">        logger.setLevel(logging.DEBUG)</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        logger.setLevel(logging.ERROR)</span><br><span class="line">    <span class="keyword">for</span> n <span class="keyword">in</span> array(args.start, args.end):</span><br><span class="line">        print(<span class="string">'Current value: %s'</span> % n)</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:</span><br><span class="line">    main()</span><br></pre></td></tr></table></figure></p>
+<p>输出如下：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">Current value: 0</span><br><span class="line">[2018-09-12 19:43:03,953] array:DEBUG: Before interation: i = 0</span><br><span class="line">[2018-09-12 19:43:03,955] array:DEBUG: After interation: i = 1</span><br><span class="line">Current value: 1</span><br><span class="line">[2018-09-12 19:43:04,339] array:DEBUG: Before interation: i = 1</span><br><span class="line">[2018-09-12 19:43:04,340] array:DEBUG: After interation: i = 2</span><br><span class="line">Current value: 2</span><br><span class="line">[2018-09-12 19:43:04,796] array:DEBUG: Before interation: i = 2</span><br><span class="line">[2018-09-12 19:43:04,797] array:DEBUG: After interation: i = 3</span><br><span class="line">Current value: 3</span><br><span class="line">[2018-09-12 19:43:05,200] array:DEBUG: Before interation: i = 3</span><br><span class="line">[2018-09-12 19:43:05,201] array:DEBUG: After interation: i = 4</span><br></pre></td></tr></table></figure></p>
+
       
     </div>
     
     
     
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/WGAN-GP训练出现NaN.html/" rel="next" title="WGAN-GP训练出现NaN">
+                <i class="fa fa-chevron-left"></i> WGAN-GP训练出现NaN
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
   </div>
 
 
@@ -319,8 +425,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
 
-      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+      <section class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
@@ -390,6 +505,22 @@
         </div>
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#为什么用logging"><span class="nav-number">1.</span> <span class="nav-text">为什么用logging</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#怎样用logging"><span class="nav-number">2.</span> <span class="nav-text">怎样用logging</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       
