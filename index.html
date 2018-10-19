@@ -5,7 +5,7 @@
   
 
 
-<html class="theme-next pisces use-motion" lang="">
+<html class="theme-next gemini use-motion" lang="">
 <head>
   <meta charset="UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=edge" />
@@ -95,7 +95,7 @@
   var NexT = window.NexT || {};
   var CONFIG = {
     root: '/',
-    scheme: 'Pisces',
+    scheme: 'Gemini',
     version: '5.1.4',
     sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":true,"onmobile":false},
     fancybox: true,
@@ -336,7 +336,7 @@
       
         
           
-          之前一直使用BSDS500的augment dataset做训练集，28800张图片，全部读进内存大约占10GB，可以实现。但当该数据集可能会过拟合，所以试图使用更大的自然数据集places2，仅训练集就有180w张图片，jpeg格式就占20GB+容量，读进内存里（np.array）会翻好几倍，所以
+          之前一直使用BSDS500的augment dataset做训练集，28800张图片，全部读进内存大约占10GB，可以实现。但当该数据集可能
           ...
           <!--noindex-->
           <div class="post-button text-center">
@@ -464,7 +464,7 @@
           
           本文简要介绍python中logging的使用
 为什么用logging在写代码时debug，最初用的都是1print(xxxx)
-比如下面一段代码：12345678910111213141516171819202122232425262728# -*- coding: utf-8 -*-import
+比如下面一
           ...
           <!--noindex-->
           <div class="post-button text-center">
@@ -590,8 +590,7 @@
       
         
           
-          最近在做实验时需要用到WGAN-GP，训练时偶尔会出现NaN，今天仔细检查了一下，找出了原因：gradient penalty中有开根号操作，求导时可能会出现除以0，出现NaN
-先看一下WGAN-GP用tensorflow的实现代码：123456789101112131415161718192021
+          最近在做实验时需要用到WGAN-GP，训练时偶尔会出现NaN，今天仔细检查了一下，找出了原因：gradient penalty中有开根号操作
           ...
           <!--noindex-->
           <div class="post-button text-center">
@@ -717,8 +716,7 @@
       
         
           
-          今天发现在GPU集群的一组程序全都异常停止了，没有报错，而且停的时间也都不一样。到本地运行相同的程序发现报错1Process finished with exit code 137 (interrupted by signal 9: SIGKILL)
-查了一下，猜测可能是两个原因：1.CPU占用2.
+          今天发现在GPU集群的一组程序全都异常停止了，没有报错，而且停的时间也都不一样。到本地运行相同的程序发现报错1Process finishe
           ...
           <!--noindex-->
           <div class="post-button text-center">
@@ -845,8 +843,7 @@
         
           
           保存参数12saver = tf.train.Saver()saver.save(sess, 'model.ckpt')
-加载全部参数（默认）1saver.restore(sess, 'model.ckpt')
-加载指定参数ckpt文件中包含了在训练中所有的参数，但是在test时可能只需要使用部分网
+加载全部参数（默认
           ...
           <!--noindex-->
           <div class="post-button text-center">
@@ -972,9 +969,7 @@
       
         
           
-          昨晚想起来博客这件事已经是10点，一开始入手jekyll，但总是有同步慢、网页404等一系列问题。今天转入Hexo，感觉好用很多。花了一下午加一晚上配置好了一些布局，之后可以专注于写一些博客了。
-下面是hex的主要语法1hexo new ***
-会在source/_post下建立***.md文件12
+          昨晚想起来博客这件事已经是10点，一开始入手jekyll，但总是有同步慢、网页404等一系列问题。今天转入Hexo，感觉好用很多。花了一下午
           ...
           <!--noindex-->
           <div class="post-button text-center">
@@ -1149,7 +1144,7 @@
 
 
 
-  <div class="theme-info">Theme &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Pisces</a> v5.1.4</div>
+  <div class="theme-info">Theme &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Gemini</a> v5.1.4</div>
 
 
 
