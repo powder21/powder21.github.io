@@ -67,7 +67,7 @@
 
 
 
-  <meta name="keywords" content="Hexo, NexT" />
+  <meta name="keywords" content="tensorflow," />
 
 
 
@@ -78,17 +78,18 @@
 
 
 
-<meta name="description" content="Education2013.9-2017.6 B.S.South China University of Technology 2017.9-now M.S.University of Science and Technology of China">
-<meta property="og:type" content="website">
-<meta property="og:title" content="about">
-<meta property="og:url" content="http://xsx.today/about/index.html">
+<meta name="description" content="什么是Exponential Moving Average(EMA)在测试model时，使用过去的weight去平滑最终的weight，平滑方式为指数平滑:$$w_{t+1}=\lambda w_{t}+(1-\lambda) \theta_{t+1}$$可以看出，t时刻的变量和之前很长时间内的历史值都相关，并且相关系数呈指数下降。很多实验表面使用EMA可以提升测试的performance。 te">
+<meta name="keywords" content="tensorflow">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Exponential Moving Average in Tensorflow">
+<meta property="og:url" content="http://xsx.today/Exponential-Moving-Average-in-Tensorflow.html/index.html">
 <meta property="og:site_name" content="Larry&#39;s blog">
-<meta property="og:description" content="Education2013.9-2017.6 B.S.South China University of Technology 2017.9-now M.S.University of Science and Technology of China">
+<meta property="og:description" content="什么是Exponential Moving Average(EMA)在测试model时，使用过去的weight去平滑最终的weight，平滑方式为指数平滑:$$w_{t+1}=\lambda w_{t}+(1-\lambda) \theta_{t+1}$$可以看出，t时刻的变量和之前很长时间内的历史值都相关，并且相关系数呈指数下降。很多实验表面使用EMA可以提升测试的performance。 te">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2018-07-15T12:55:06.558Z">
+<meta property="og:updated_time" content="2018-12-04T15:19:03.593Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="about">
-<meta name="twitter:description" content="Education2013.9-2017.6 B.S.South China University of Technology 2017.9-now M.S.University of Science and Technology of China">
+<meta name="twitter:title" content="Exponential Moving Average in Tensorflow">
+<meta name="twitter:description" content="什么是Exponential Moving Average(EMA)在测试model时，使用过去的weight去平滑最终的weight，平滑方式为指数平滑:$$w_{t+1}=\lambda w_{t}+(1-\lambda) \theta_{t+1}$$可以看出，t时刻的变量和之前很长时间内的历史值都相关，并且相关系数呈指数下降。很多实验表面使用EMA可以提升测试的performance。 te">
 
 
 
@@ -118,13 +119,13 @@
 
 
 
-  <link rel="canonical" href="http://xsx.today/about/"/>
+  <link rel="canonical" href="http://xsx.today/Exponential-Moving-Average-in-Tensorflow.html/"/>
 
 
 
 
 
-  <title>about | Larry's blog</title>
+  <title>Exponential Moving Average in Tensorflow | Larry's blog</title>
   
 
 
@@ -253,35 +254,149 @@
 
   <div id="posts" class="posts-expand">
     
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://xsx.today/Exponential-Moving-Average-in-Tensorflow.html/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Larry Xu">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/my_icon.jpeg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Larry's blog">
+    </span>
+
     
-    
-    <div class="post-block page">
       <header class="post-header">
 
-	<h1 class="post-title" itemprop="name headline">about</h1>
-
-
-
-</header>
-
-      
-      
-      
-      <div class="post-body">
         
         
-          <h2 id="Education"><a href="#Education" class="headerlink" title="Education"></a>Education</h2><p><strong>2013.9-2017.6 B.S.</strong><br><em>South China University of Technology</em></p>
-<p><strong>2017.9-now M.S.</strong><br><em>University of Science and Technology of China</em></p>
-
+          <h1 class="post-title" itemprop="name headline">Exponential Moving Average in Tensorflow</h1>
         
-      </div>
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-12-04T22:29:19+08:00">
+                2018-12-04
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
       
       
+
+      
+        <h3 id="什么是Exponential-Moving-Average-EMA"><a href="#什么是Exponential-Moving-Average-EMA" class="headerlink" title="什么是Exponential Moving Average(EMA)"></a>什么是Exponential Moving Average(EMA)</h3><p>在测试model时，使用过去的weight去平滑最终的weight，平滑方式为指数平滑:<br>$$w_{t+1}=\lambda w_{t}+(1-\lambda) \theta_{t+1}$$<br>可以看出，t时刻的变量和之前很长时间内的历史值都相关，并且相关系数呈指数下降。很多实验表面使用EMA可以提升测试的performance。</p>
+<h3 id="tensorflow中EMA的使用"><a href="#tensorflow中EMA的使用" class="headerlink" title="tensorflow中EMA的使用"></a>tensorflow中EMA的使用</h3><p>在tensorflow中，有现成的EMA接口<code>tf.train.ExponentialMovingAverage</code>完成相关的操作<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">var = tf.trainable_variables()</span><br><span class="line">ema = tf.train.ExponentialMovingAverage(decay=<span class="number">0.999</span>)</span><br><span class="line">ema_op = ema.apply(var)</span><br></pre></td></tr></table></figure></p>
+<p>至此在model中会生成额外的用上面提到的公式计算的EMA变量。</p>
+<p>关键是在test时使用EMA变量，官方提出了两种可行方案，一种是restore时将EMA参量load进model中，这种方法没有办法在train的时候进行test(validation);另一种是使用<code>ema.average()</code>接口，下面对后者进行说明。<br>主要手段是使用variable scope的getter参量:<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">get_getter</span><span class="params">(ema)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">ema_getter</span><span class="params">(getter, name, *args, **kwargs)</span>:</span></span><br><span class="line">        var = getter(name, *args, **kwargs)</span><br><span class="line">        ema_var = ema.average(var)</span><br><span class="line">        <span class="keyword">return</span> ema_var <span class="keyword">if</span> ema_var <span class="keyword">else</span> var</span><br><span class="line">    <span class="keyword">return</span> ema_getter</span><br><span class="line">	</span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">discriminator</span><span class="params">(self, input, n_channel=<span class="number">64</span>, name=<span class="string">"discriminator"</span>, reuse=False, getter=None)</span>:</span></span><br><span class="line">	<span class="keyword">with</span> tf.variable_scope(name, reuse=reuse, custom_getter=getter):</span><br><span class="line">		<span class="keyword">with</span> arg_scope([conv2d], padding=<span class="string">'SAME'</span>, kernel_size=<span class="number">5</span>, stride=<span class="number">2</span>):</span><br><span class="line">			conv1 = conv2d(input, n_channel * <span class="number">1</span>, scope=<span class="string">"conv1"</span>)</span><br><span class="line">			conv2 = conv2d(conv1, n_channel * <span class="number">2</span>, scope=<span class="string">"conv2"</span>)</span><br><span class="line">			conv3 = conv2d(conv2, n_channel * <span class="number">4</span>, scope=<span class="string">"conv3"</span>)</span><br><span class="line">			conv4 = conv2d(conv3, n_channel * <span class="number">4</span>, scope=<span class="string">"conv4"</span>)</span><br><span class="line">			flatten = tf.contrib.layers.flatten(conv4)</span><br><span class="line">			output = linear(flatten, <span class="number">1</span>, name=<span class="string">"linear"</span>)</span><br><span class="line">			<span class="keyword">return</span> [conv1,conv2,conv3,conv4],output</span><br><span class="line"></span><br><span class="line">getter = get_getter(ema)</span><br><span class="line">fake_layers, fake_d_logits = discriminator(fake_imgs, getter=getter)</span><br></pre></td></tr></table></figure></p>
+<p>注意，training的代码不用变化，getter参量传入None即可。</p>
+<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p>EMA是test期间对model从时间维度进行平滑的优化操作，train过程不变，只是会生成平滑的变量存入model中。test情形有两种：在线和离线。<br>离线操作只需在restore时只load平滑后的网络参数，在线操作涉及到<code>ema.average()</code>接口。</p>
+
       
     </div>
     
     
     
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/tensorflow/" rel="tag"># tensorflow</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/使用TFRecord处理大数据集IO.html/" rel="next" title="使用TFRecord处理大数据集IO">
+                <i class="fa fa-chevron-left"></i> 使用TFRecord处理大数据集IO
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
   </div>
 
 
@@ -404,7 +519,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Education"><span class="nav-number">1.</span> <span class="nav-text">Education</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#什么是Exponential-Moving-Average-EMA"><span class="nav-number">1.</span> <span class="nav-text">什么是Exponential Moving Average(EMA)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#tensorflow中EMA的使用"><span class="nav-number">2.</span> <span class="nav-text">tensorflow中EMA的使用</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#总结"><span class="nav-number">3.</span> <span class="nav-text">总结</span></a></li></ol></div>
             
 
           </div>
