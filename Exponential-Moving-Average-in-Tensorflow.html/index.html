@@ -86,7 +86,7 @@
 <meta property="og:site_name" content="Larry&#39;s blog">
 <meta property="og:description" content="什么是Exponential Moving Average(EMA)在测试model时，使用过去的weight去平滑最终的weight，平滑方式为指数平滑:$$w_{t+1}=\lambda w_{t}+(1-\lambda) \theta_{t+1}$$可以看出，t时刻的变量和之前很长时间内的历史值都相关，并且相关系数呈指数下降。很多实验表面使用EMA可以提升测试的performance。 te">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2018-12-05T13:52:09.540Z">
+<meta property="og:updated_time" content="2018-12-05T13:53:01.389Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Exponential Moving Average in Tensorflow">
 <meta name="twitter:description" content="什么是Exponential Moving Average(EMA)在测试model时，使用过去的weight去平滑最终的weight，平滑方式为指数平滑:$$w_{t+1}=\lambda w_{t}+(1-\lambda) \theta_{t+1}$$可以看出，t时刻的变量和之前很长时间内的历史值都相关，并且相关系数呈指数下降。很多实验表面使用EMA可以提升测试的performance。 te">
@@ -340,7 +340,7 @@
 <p><code>get_getter</code>函数主要是返回一个getter给<code>tf.variable_scope</code>的<code>custom_getter</code>参数。当调用<code>tf.get_variable</code>时，默认getter会根据变量名得到已有变量。自定义getter可以修改已有的变量。</p>
 <p><div class="note warning"><p>注意，training的代码不用变化，getter参量传入None即可</p></div></p>
 <h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p>EMA是test期间对model从时间维度进行平滑的优化操作，train过程不变，只是会生成平滑的变量存入model中。test情形有两种：在线和离线。<br>离线操作只需在restore时只load平滑后的网络参数，在线操作涉及到<code>ema.average()</code>接口。</p>
-<h3 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h3><p><a href="http://ruishu.io/2017/11/22/ema/" target="_blank" rel="noopener">http://ruishu.io/2017/11/22/ema/</a><br><a href="https://www.tensorflow.org/api_docs/python/tf/train/ExponentialMovingAverage" target="_blank" rel="noopener">https://www.tensorflow.org/api_docs/python/tf/train/ExponentialMovingAverage</a><br><a href="https://github.com/tensorflow/models/blob/master/tutorials/image/cifar10/cifar10_eval.py" target="_blank" rel="noopener">https://github.com/tensorflow/models/blob/master/tutorials/image/cifar10/cifar10_eval.py</a></p>
+<h3 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h3><p><a href="http://ruishu.io/2017/11/22/ema/" target="_blank" rel="noopener">http://ruishu.io/2017/11/22/ema/</a><br><a href="https://www.tensorflow.org/api_docs/python/tf/train/ExponentialMovingAverage" target="_blank" rel="noopener">https://www.tensorflow.org/api_docs/python/tf/train/ExponentialMovingAverage</a><br><a href="https://github.com/tensorflow/models/blob/master/tutorials/image/cifar10/cifar10_eval.py" target="_blank" rel="noopener">https://github.com/tensorflow/models/blob/master/tutorials/image/cifar10/cifar10_eval.py</a><br><a href="https://www.tensorflow.org/api_docs/python/tf/get_variable" target="_blank" rel="noopener">https://www.tensorflow.org/api_docs/python/tf/get_variable</a></p>
 
       
     </div>
