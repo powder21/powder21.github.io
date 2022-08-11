@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Video user study</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="FileSaver.js"></script>
+<style>
+* {box-sizing: border-box}
+body {font-family: Verdana, sans-serif; margin:0}
+.mySlides {display: none}
+img {vertical-align: middle;}
+.slideshow-container {
+  max-width: 1920px;
+  position: relative;
+  margin: auto;
+}
+.prev, .next {
+  cursor: pointer;
+  position: absolute;
+  top: 50%;
+  width: auto;
+  padding: -10px;
+  margin-top: -22px;
+  color: blue;
+  font-weight: bold;
+  font-size: 38px;
+  transition: 0.6s ease;
+  border-radius: 0 3px 3px 0;
+}
+.next {
+  right: 0;
+  border-radius: 3px 0 0 3px;
+}
+.prev:hover, .next:hover {
+  background-color: rgba(0,0,0,0);
+}
+.text {
+  text-align: center;
+}
+.numbertext {
+  color: #f2f2f2;
+  font-size: 12px;
+  padding: 8px 12px;
+  position: absolute;
+  top: 0;
+}
+.dot {
+  cursor: pointer;
+  height: 15px;
+  width: 15px;
+  margin: 0 2px;
+  background-color: #bbb;
+  border-radius: 5%;
+  display: inline-block;
+  transition: background-color 0.6s ease;
+}
+.active, .dot:hover {
+  background-color: #717171;
+}
+.fade {
+  -webkit-animation-name: fade;
+  -webkit-animation-duration: 1.5s;
+  animation-name: fade;
+  animation-duration: 1.5s;
+}
+@-webkit-keyframes fade {
+  from {opacity: .4} 
+  to {opacity: 1}
+}
+@keyframes fade {
+  from {opacity: .4} 
+  to {opacity: 1}
+}
+@media only screen and (max-width: 300px) {
+  .prev, .next,.text {font-size: 11px},
+   .column {
+        width: 100%;
+    }
+}
+.column {
+    float: left;
+    width: 32%;
+    padding: 5px;
+}
+.row::after {
+    content: "";
+    clear: both;
+    display: table;
+}
+#div_in {
+    float: left;
+    width: 480px;
+    height: 256px;
+    margin: 1px;
+    padding: 1px;
+    border: 1px dotted black;
+}
+.div {
+    float: left;
+    width: 480px;
+    height: 270px;
+    margin: 1px;
+    padding: 1px;
+    border: 1px solid black;
+}
+</style>
+</head>
+<body>
+<div class="slideshow-container">
+<p>Super-Resolution User Study</p>
+<p>请将视觉效果最好的第一、二、三张图依次拖入最下方的top1、top2、top3的方框中。</p>
+<p>当图较小区分不出区别时，鼠标右键依次点击图像->在新的标签页中打开可查看大图->Ctrl(或command)+数字键可以快捷切换标签便于比较。</p>
+<div class="mySlides fade">
+<div class="row">
+<div class="column">
+<div id="divIn1" ondrop="drop(event)" ondragover="allowDrop(event)">
+<img src="RealSR_JPEG/1.png" draggable=true ondragstart="drag(event)" id="RealSR_JPEG/video1" style="width: 500px; height: auto; object-fit: contain;">
+</div>
+</div>
+<div class="column">
+<div id="divIn2" ondrop="drop(event)" ondragover="allowDrop(event)">
+<img src="ours1/1.png" draggable=true ondragstart="drag(event)" id="ours1/video2" style="width: 500px; height: auto; object-fit: contain;">
+</div>
+</div>
+<div class="column">
+<div id="divIn3" ondrop="drop(event)" ondragover="allowDrop(event)">
+<img src="Real-ESRGAN/1.png" draggable=true ondragstart="drag(event)" id="Real-ESRGAN/video3" style="width: 500px; height: auto; object-fit: contain;">
+</div>
+</div>
+<div class="column">
+<div id="divIn4" ondrop="drop(event)" ondragover="allowDrop(event)">
+<img src="LDL/1.png" draggable=true ondragstart="drag(event)" id="LDL/video4" style="width: 500px; height: auto; object-fit: contain;">
+</div>
+</div>
+<div class="column">
+<div id="divIn5" ondrop="drop(event)" ondragover="allowDrop(event)">
+<img src="BSRGAN/1.png" draggable=true ondragstart="drag(event)" id="BSRGAN/video5" style="width: 500px; height: auto; object-fit: contain;">
+</div>
+</div>
+<div class="column">
+<div id="divIn6" ondrop="drop(event)" ondragover="allowDrop(event)">
+<img src="RealSR_DPED/1.png" draggable=true ondragstart="drag(event)" id="RealSR_DPED/video6" style="width: 500px; height: auto; object-fit: contain;">
+</div>
+</div>
+</div>
+<div class="row">
+<div class="column">
+<div class="div" id="div1" ondrop="drop(event)" ondragover="allowDrop(event)" style="width: 500px; height: 500px; object-fit: contain;">
+<input type="hidden" value="t1"/>
+</div>
+</div>
+<div class="column">
+<div class="div" id="div2" ondrop="drop(event)" ondragover="allowDrop(event)" style="width: 500px; height: 500px; object-fit: contain;">
+<input type="hidden" value="t1"/>
+</div>
+</div>
+<div class="column">
+<div class="div" id="div3" ondrop="drop(event)" ondragover="allowDrop(event)" style="width: 500px; height: 500px; object-fit: contain;">
+<input type="hidden" value="t1"/>
+</div>
+</div>
+</div>
+<div class="row">
+<div class="column">
+<div class="text">Top 1</div>
+</div>
+<div class="column">
+<div class="text">Top 2</div>
+</div>
+<div class="column">
+<div class="text">Top 3</div>
+</div>
+</div>
+</div>
+<div class="mySlides fade">
+<h2>Complete : Thank you for your time! Please submit the results as a text file.</h2>
+<input type="button" width="400" height="80" align="center" onclick="myFunction()" value="Submit Result">
+</div>
+</div>
+</div>
+<a class="prev" onclick="plusSlides(-1)">&#10094;</a>
+<a class="next" onclick="plusSlides(1)">&#10095;</a>
+</div>
+<br>
+<div style="text-align:center">
+  <span class="dot" onclick="currentSlide(1)"></span>
+  <span class="dot" onclick="currentSlide(2)"></span>
+  <span class="dot" onclick="currentSlide(3)"></span>
+  <span class="dot" onclick="currentSlide(4)"></span>
+  <span class="dot" onclick="currentSlide(5)"></span>
+  <span class="dot" onclick="currentSlide(6)"></span>
+  <span class="dot" onclick="currentSlide(7)"></span>
+  <span class="dot" onclick="currentSlide(8)"></span>
+  <span class="dot" onclick="currentSlide(9)"></span>
+  <span class="dot" onclick="currentSlide(10)"></span>
+  <span class="dot" onclick="currentSlide(11)"></span>
+  <span class="dot" onclick="currentSlide(12)"></span>
+  <span class="dot" onclick="currentSlide(13)"></span>
+  <span class="dot" onclick="currentSlide(14)"></span>
+ <span class="dot" onclick="currentSlide(15)"></span>
+</div>
+<script>
+var slideIndex = 1;
+showSlides(slideIndex);
+function plusSlides(n) {
+  showSlides(slideIndex += n);
+}
+function currentSlide(n) {
+  showSlides(slideIndex = n);
+}
+function showSlides(n) {
+  var i;
+  var slides = document.getElementsByClassName("mySlides");
+  var dots = document.getElementsByClassName("dot");
+  if (n > slides.length) {slideIndex = 1}    
+  if (n < 1) {slideIndex = slides.length}
+  for (i = 0; i < slides.length; i++) {
+      slides[i].style.display = "none";  
+  }
+  for (i = 0; i < dots.length; i++) {
+     dots[i].className = dots[i].className.replace(" active", "");
+  }
+  slides[slideIndex-1].style.display = "block";  
+  dots[slideIndex-1].className += " active";
+}
+function allowDrop(ev) {
+    ev.preventDefault();
+}
+function drag(ev) {
+    ev.dataTransfer.setData("text", ev.target.id);
+}
+function drop(ev) {
+    ev.preventDefault();
+    var data = ev.dataTransfer.getData("text");
+    ev.target.appendChild(document.getElementById(data));
+  if (ev.target.id != "div_in")
+  {
+    var divNode = document.getElementById(ev.target.id);
+    var inputNodes = divNode.getElementsByTagName('input');
+    inputNodes[0].value = data
+  }
+}
+function myFunction() {
+  var id;
+  var result = "";
+  for (id = 1; id <= 3; id++) {
+    divName = "div" + id
+    var divNode = document.getElementById(divName);
+    var inputNodes = divNode.getElementsByTagName('input');
+    result = result + divName + " " + inputNodes[0].value+"\n"
+  }
+  var file = new File([result], "video_prop_yourname.txt", {type: "text/plain;charset=utf-8"});
+  saveAs(file);
+}
+</script>
+</body>
+<html>
